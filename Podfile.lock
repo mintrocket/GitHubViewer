@@ -1,0 +1,57 @@
+PODS:
+  - Alamofire (4.7.2)
+  - DITranquillity (3.5.1):
+    - SwiftLazy
+  - IGListKit (3.4.0):
+    - IGListKit/Default (= 3.4.0)
+  - IGListKit/Default (3.4.0):
+    - IGListKit/Diffing
+  - IGListKit/Diffing (3.4.0)
+  - Kingfisher (4.10.0)
+  - PinLayout (1.8.6)
+  - RxCocoa (4.3.1):
+    - RxSwift (~> 4.0)
+  - RxSwift (4.3.1)
+  - SwiftDate (5.0.12)
+  - SwiftLazy (1.1.0)
+  - SwiftyBeaver (1.6.1)
+
+DEPENDENCIES:
+  - Alamofire (= 4.7.2)
+  - DITranquillity (= 3.5.1)
+  - IGListKit (= 3.4.0)
+  - Kingfisher (= 4.10.0)
+  - PinLayout (= 1.8.6)
+  - RxCocoa (= 4.3.1)
+  - RxSwift (= 4.3.1)
+  - SwiftDate (= 5.0.12)
+  - SwiftyBeaver (= 1.6.1)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - DITranquillity
+    - IGListKit
+    - Kingfisher
+    - PinLayout
+    - RxCocoa
+    - RxSwift
+    - SwiftDate
+    - SwiftLazy
+    - SwiftyBeaver
+
+SPEC CHECKSUMS:
+  Alamofire: e4fa87002c137ba2d8d634d2c51fabcda0d5c223
+  DITranquillity: bf0e4be6562a490818c4d11d766c83623dd92a51
+  IGListKit: 7a5d788e9fb746bcd402baa8e8b24bc3bd2a5a07
+  Kingfisher: 43c4b802d8b5256cf1f4379e9cd10b329be6d3e2
+  PinLayout: fe2a2432d6982588e208572005c941aeeae417ab
+  RxCocoa: 78763c7b07d02455598d9fc3c1ad091a28b73635
+  RxSwift: fe0fd770a43acdb7d0a53da411c9b892e69bb6e4
+  SwiftDate: 4622d4ff136b123d11559d93955898c51ee21ed1
+  SwiftLazy: 90d61205fa3c2e492da870310ba719c0a63cdce3
+  SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
+
+PODFILE CHECKSUM: 4fcfec88f42cb87b590e6c2469303705f78d1b07
+
+COCOAPODS: 1.5.3
