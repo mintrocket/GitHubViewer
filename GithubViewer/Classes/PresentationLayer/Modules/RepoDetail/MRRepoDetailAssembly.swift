@@ -3,7 +3,7 @@ import DITranquillity
 
 final class RepoDetailPart: DIPart {
     static func load(container: DIContainer) {
-        container.register(RepoDetailRouter.init)
+        container.register1(RepoDetailRouter.init)
             .lifetime(.objectGraph)
 
         container.register(RepoDetailPresenter.init)

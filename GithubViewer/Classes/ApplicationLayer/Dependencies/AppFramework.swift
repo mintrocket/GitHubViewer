@@ -57,23 +57,12 @@ private class ControllersPart: DIPart {
 
 private class OtherPart: DIPart {
     static func load(container: DIContainer) {
-        container.register(AlertErrorHandler.init)
-            .as(ErrorHandling.self)
-            .lifetime(.single)
-
         container.register(SchedulerProviderImp.init)
             .as(SchedulerProvider.self)
             .lifetime(.single)
 
-
-        // configuration
-        container.register(Configuration.init)
-            .as(ApiUrlHolder.self)
-            .lifetime(.single)
-
-        container.register1 {
-            BackendConfiguration(holder: $0,
-                                 converter: JsonResponseConverter(),
+        container.register {
+            BackendConfiguration(converter: JsonResponseConverter(),
                                  interceptor: nil,
                                  retrier: nil)
             }

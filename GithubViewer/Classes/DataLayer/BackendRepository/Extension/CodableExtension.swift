@@ -7,22 +7,72 @@ extension Encodable {
     }
 }
 
+import Foundation
+
+extension KeyedDecodingContainer where Key == String {
+    subscript<T>(key: Key, default defaultValue: @autoclosure () -> T) -> T where T: Decodable {
+        if let data = self.find(key: key),
+            let value = try? data.container.decodeIfPresent(T.self, forKey: data.key),
+            let result = value {
+            return result
+        }
+        return defaultValue()
+    }
+    
+    subscript<T>(key: Key) -> T? where T: Decodable {
+        if let data = self.find(key: key),
+            let value = try? data.container.decodeIfPresent(T.self, forKey: data.key) {
+            return value
+        }
+        return nil
+    }
+    
+    private func find(key: Key) -> (key: Key, container: KeyedDecodingContainer)? {
+        let keys = key.split(separator: ".").map(String.init)
+        
+        if keys.count < 2 {
+            return (key, self)
+        }
+        
+        let last = keys.count - 1
+        var container: KeyedDecodingContainer? = self
+        for index in 0..<last {
+            if let value = container {
+                container = try? value.nestedContainer(keyedBy: String.self, forKey: keys[index])
+            }
+        }
+        
+        if let value = container {
+            return (keys[last], value)
+        }
+        
+        return nil
+    }
+}
+
 extension KeyedDecodingContainer {
     subscript<T>(key: Key, default defaultValue: @autoclosure () -> T) -> T where T: Decodable {
-        get {
-            if let value = try? self.decodeIfPresent(T.self, forKey: key), let result = value {
-                return result
-            }
-            return defaultValue()
+        if let value = try? self.decodeIfPresent(T.self, forKey: key), let result = value {
+            return result
         }
+        return defaultValue()
     }
-
+    
     subscript<T>(key: Key) -> T? where T: Decodable {
+        if let value = try? self.decodeIfPresent(T.self, forKey: key) {
+            return value
+        }
+        return nil
+    }
+}
+
+extension KeyedEncodingContainer {
+    subscript<T>(key: Key) -> T? where T: Encodable {
         get {
-            if let value = try? self.decodeIfPresent(T.self, forKey: key) {
-                return value
-            }
             return nil
+        }
+        set {
+            try? self.encode(newValue, forKey: key)
         }
     }
 }
@@ -31,26 +81,25 @@ extension String: CodingKey {
     public var stringValue: String {
         return self
     }
-
+    
     public var intValue: Int? {
         return nil
     }
-
+    
     public init?(intValue: Int) {
         return nil
     }
-
+    
     public init?(stringValue: String) {
         self = stringValue
     }
 }
 
-public protocol DecodingContext {
-}
+public protocol DecodingContext {}
 
 extension CodingUserInfoKey {
     public static let decodingContext: CodingUserInfoKey = CodingUserInfoKey(rawValue: "decodingContext")!
-}
+   }
 
 extension Decoder {
     public var decodingContext: DecodingContext? {
@@ -64,3 +113,30 @@ extension JSONDecoder {
         self.userInfo[.decodingContext] = context
     }
 }
+
+extension Decoder {
+    @inline(__always) func apply(action: (KeyedDecodingContainer<String>) -> ()) throws {
+        let container = try self.container(keyedBy: String.self)
+        action(container)
+    }
+    
+    subscript<T>(key: String, default defaultValue: @autoclosure () -> T) -> T where T: Decodable {
+        if let container = try? self.container(keyedBy: String.self) {
+            return container[key, default: defaultValue()]
+        }
+        return defaultValue()
+    }
+    
+    subscript<T>(key: String) -> T? where T: Decodable {
+        let container = try? self.container(keyedBy: String.self)
+        return container?[key]
+    }
+}
+
+extension Encoder {
+    func apply<T: CodingKey>(_ action: (inout KeyedEncodingContainer<T>) -> ()) {
+        var container = self.container(keyedBy: T.self)
+        action(&container)
+    }
+}
+

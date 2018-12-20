@@ -4,6 +4,11 @@ import Foundation
 /// Request configuration protocol
 protocol BackendAPIRequest {
     associatedtype ResponseObject: Decodable
+    /// Server url
+    ///
+    /// Example: "http://example.com"
+    var baseUrl: String { get }
+    
     /// Path of request without baseUrl and version of API
     ///
     /// Example: "users/detail"
@@ -11,7 +16,7 @@ protocol BackendAPIRequest {
 
     /// Version of API
     ///
-    /// Default: "v1"
+    /// Default: ""
     var apiVersion: String { get }
 
     /// Network method like GET, POST and etc
@@ -42,11 +47,15 @@ protocol BackendAPIRequest {
 }
 
 extension BackendAPIRequest {
+    var baseUrl: String {
+        return Configuration.server
+    }
+    
     var apiVersion: String {
         return ""
     }
 
-    var parameters: [String: AnyObject] {
+    var parameters: [String: Any] {
         return [:]
     }
 

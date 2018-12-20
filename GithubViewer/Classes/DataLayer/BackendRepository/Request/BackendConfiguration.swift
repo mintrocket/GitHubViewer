@@ -1,15 +1,8 @@
 import Alamofire
 import Foundation
 
-public protocol ApiUrlHolder {
-    func apiUrl() -> String
-}
-
 /// Configuration of BackendService
 final class BackendConfiguration {
-    /// Url of API Server
-    let baseURL: URL
-
     /// Default server response converter
     var converter: BackendResponseConverter
 
@@ -25,15 +18,9 @@ final class BackendConfiguration {
     /// - parameter converter: Server response converter
     /// - parameter interceptor: It intercept all requests before execute
     /// - parameter retrier: It intercept error for retry request
-    public init(holder: ApiUrlHolder,
-                converter: BackendResponseConverter,
+    public init(converter: BackendResponseConverter,
                 interceptor: RequestAdapter? = nil,
                 retrier: RequestRetrier? = nil) {
-        if let url = try? holder.apiUrl().asURL() {
-            self.baseURL = url
-        } else {
-            fatalError("URL REQUIRED")
-        }
         self.converter = converter
         self.interceptor = interceptor
         self.retrier = retrier

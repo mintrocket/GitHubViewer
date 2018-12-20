@@ -11,7 +11,6 @@ class BackendRepositoryPart: DIPart {
 }
 
 protocol BackendRepository {
-    var config: BackendConfiguration { get }
     func request<T: BackendAPIRequest>(_ request: T) -> Single<ResponseData<T.ResponseObject>>
 }
 
@@ -45,7 +44,7 @@ final class BackendRepositoryImp: BackendRepository, Loggable {
     }
 
     private func defaultRequest<T: BackendAPIRequest>(_ request: T) -> Single<NetworkManager.NetworkResponse> {
-        return self.networkManager.request(url: request.buildUrl(with: self.config),
+        return self.networkManager.request(url: request.buildUrl(),
                                            method: request.method,
                                            params: request.parameters,
                                            headers: request.headers)
@@ -53,7 +52,7 @@ final class BackendRepositoryImp: BackendRepository, Loggable {
 
     private func multipartRequest<T: BackendAPIRequest>(_ request: T) -> Single<NetworkManager.NetworkResponse> {
         return self.networkManager.upload(data: request.multiPartData!,
-                                          url: request.buildUrl(with: self.config),
+                                          url: request.buildUrl(),
                                           method: request.method,
                                           params: request.parameters,
                                           headers: request.headers)
@@ -84,11 +83,13 @@ final class BackendRepositoryImp: BackendRepository, Loggable {
 }
 
 fileprivate extension BackendAPIRequest {
-    func buildUrl(with conf: BackendConfiguration) -> URL {
-        var result = conf.baseURL
-        if !apiVersion.isEmpty {
-            result = result.appendingPathComponent(apiVersion)
+    func buildUrl() -> URL {
+        guard var url = URL(string: baseUrl) else {
+            fatalError("NOT VALID STRING URL!")
         }
-        return result.appendingPathComponent(endpoint)
+        if !apiVersion.isEmpty {
+            url = url.appendingPathComponent(apiVersion)
+        }
+        return url.appendingPathComponent(endpoint)
     }
 }

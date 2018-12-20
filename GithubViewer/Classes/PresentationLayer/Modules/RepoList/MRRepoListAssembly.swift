@@ -3,7 +3,7 @@ import DITranquillity
 
 final class RepoListPart: DIPart {
     static func load(container: DIContainer) {
-        container.register(RepoListRouter.init)
+        container.register1(RepoListRouter.init)
             .lifetime(.objectGraph)
 
         container.register(RepoListPresenter.init)

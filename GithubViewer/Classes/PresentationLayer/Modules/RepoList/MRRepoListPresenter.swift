@@ -68,12 +68,12 @@ extension RepoListPresenter: RepoListEventHandler {
             }
             .showErrorMessage { [weak view, weak router] error in
                 view?.hideLoading()
-                router?.handle(error: error)
+                router?.show(error: error)
             }
             .showEmptyError { [weak view, weak router] value in
                 view?.hideLoading()
                 if let error = value.error {
-                    router?.handle(error: error)
+                    router?.show(error: error)
                 }
             }
             .showRefreshProgress(refreshAction)

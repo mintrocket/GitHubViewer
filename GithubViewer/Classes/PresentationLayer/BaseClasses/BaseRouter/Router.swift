@@ -5,18 +5,11 @@ protocol RouterProtocol: class {
     var controller: ViewController! { get }
 }
 
-class BaseRouter<U>: RouterProtocol where U: UIViewController {
+class BaseRouter<U>: RouterProtocol, ErrorHandlingRoute where U: UIViewController {
     typealias ViewController = U
-
     weak var controller: ViewController!
-    var errorHandler: ErrorHandling?
 
-    init(view: ViewController, errorHandler: ErrorHandling? = nil) {
+    init(view: ViewController) {
         self.controller = view
-        self.errorHandler = errorHandler
-    }
-
-    func handle(error: Error) {
-        self.errorHandler?.handleError(error: error)
     }
 }

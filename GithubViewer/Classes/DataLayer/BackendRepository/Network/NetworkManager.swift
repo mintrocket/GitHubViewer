@@ -33,7 +33,7 @@ open class NetworkManager: Loggable {
 
     func request(url: URL,
                  method: Method,
-                 params: [String: AnyObject]? = nil,
+                 params: [String: Any]? = nil,
                  headers: [String: String]? = nil) -> Single<NetworkResponse> {
         return Single.deferred({ [unowned self] () -> Single<NetworkResponse> in
             let request = self.createRequest(url: url,
@@ -65,7 +65,7 @@ open class NetworkManager: Loggable {
     func upload(data: [String: MultiPartData],
                 url: URL,
                 method: Method,
-                params: [String: AnyObject]? = nil,
+                params: [String: Any]? = nil,
                 headers: [String: String]? = nil) -> Single<NetworkResponse> {
         return Single.deferred({ [unowned self] () -> Single<NetworkResponse> in
             let request = self.createRequest(url: url,
@@ -124,12 +124,11 @@ open class NetworkManager: Loggable {
             request.allHTTPHeaderFields = [:]
         }
         request.allHTTPHeaderFields!["Content-type"] = "application/json"
-        request.allHTTPHeaderFields!["Accept"] = "application/json"
     }
 
     func createRequest(url: URL,
                        method: Method,
-                       params: [String: AnyObject]?,
+                       params: [String: Any]?,
                        headers: [String: String]?) -> URLRequest {
         var requestURL: URL = url
         if let values = params {

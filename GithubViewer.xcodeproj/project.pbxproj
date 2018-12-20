@@ -36,8 +36,6 @@
 		46E61A1B218D8B1B008D130E /* WindowTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A18218D8B1B008D130E /* WindowTransition.swift */; };
 		46E61A1C218D8B1B008D130E /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A19218D8B1B008D130E /* Router.swift */; };
 		46E61A1D218D8B1B008D130E /* Chaperone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A1A218D8B1B008D130E /* Chaperone.swift */; };
-		46E61A22218D8BC8008D130E /* AlertErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A1F218D8BC8008D130E /* AlertErrorHandler.swift */; };
-		46E61A24218D8BC8008D130E /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A21218D8BC8008D130E /* ErrorHandler.swift */; };
 		46E61A26218D8CA8008D130E /* MRAppAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A25218D8CA8008D130E /* MRAppAlertController.swift */; };
 		46E61A29218EDAC3008D130E /* ShedulerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A28218EDAC2008D130E /* ShedulerProvider.swift */; };
 		46E61A2B218EDADB008D130E /* Paginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A2A218EDADB008D130E /* Paginator.swift */; };
@@ -53,7 +51,6 @@
 		46E61A6A218EDD43008D130E /* BackendAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A67218EDD43008D130E /* BackendAPIRequest.swift */; };
 		46E61A6B218EDD43008D130E /* BackendConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A68218EDD43008D130E /* BackendConfiguration.swift */; };
 		46E61A6C218EDD43008D130E /* BackendRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A69218EDD43008D130E /* BackendRepository.swift */; };
-		46E61A6F218EDDB1008D130E /* AppConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = 46E61A6D218EDDB1008D130E /* AppConfiguration.plist */; };
 		46E61A70218EDDB1008D130E /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A6E218EDDB1008D130E /* Configuration.swift */; };
 		46E61A72218EE6CB008D130E /* CodableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A71218EE6CB008D130E /* CodableExtension.swift */; };
 		46E61A74218EE78F008D130E /* ApiError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A73218EE78F008D130E /* ApiError.swift */; };
@@ -92,6 +89,7 @@
 		BF_679588664069 /* MRRepoDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_849103704991 /* MRRepoDetailRouter.swift */; };
 		BF_739475135604 /* MRRepoDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_655853033878 /* MRRepoDetailPresenter.swift */; };
 		BF_783543032456 /* MRRepoDetailContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172257646910 /* MRRepoDetailContracts.swift */; };
+		C7AC32D921CB8D8200E4F17B /* ErrorHandlingRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AC32D821CB8D8200E4F17B /* ErrorHandlingRoute.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -131,8 +129,6 @@
 		46E61A18218D8B1B008D130E /* WindowTransition.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowTransition.swift; sourceTree = "<group>"; };
 		46E61A19218D8B1B008D130E /* Router.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		46E61A1A218D8B1B008D130E /* Chaperone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Chaperone.swift; sourceTree = "<group>"; };
-		46E61A1F218D8BC8008D130E /* AlertErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertErrorHandler.swift; sourceTree = "<group>"; };
-		46E61A21218D8BC8008D130E /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
 		46E61A25218D8CA8008D130E /* MRAppAlertController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRAppAlertController.swift; sourceTree = "<group>"; };
 		46E61A28218EDAC2008D130E /* ShedulerProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShedulerProvider.swift; sourceTree = "<group>"; };
 		46E61A2A218EDADB008D130E /* Paginator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginator.swift; sourceTree = "<group>"; };
@@ -148,7 +144,6 @@
 		46E61A67218EDD43008D130E /* BackendAPIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendAPIRequest.swift; sourceTree = "<group>"; };
 		46E61A68218EDD43008D130E /* BackendConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendConfiguration.swift; sourceTree = "<group>"; };
 		46E61A69218EDD43008D130E /* BackendRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendRepository.swift; sourceTree = "<group>"; };
-		46E61A6D218EDDB1008D130E /* AppConfiguration.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AppConfiguration.plist; sourceTree = "<group>"; };
 		46E61A6E218EDDB1008D130E /* Configuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Configuration.swift; sourceTree = "<group>"; };
 		46E61A71218EE6CB008D130E /* CodableExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CodableExtension.swift; sourceTree = "<group>"; };
 		46E61A73218EE78F008D130E /* ApiError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiError.swift; sourceTree = "<group>"; };
@@ -177,6 +172,7 @@
 		46E61AC3218EFFF0008D130E /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		46E61AC5218F002C008D130E /* NSObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtension.swift; sourceTree = "<group>"; };
 		BF48A87BBD0FDE69646F7EAD /* Pods-GithubViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GithubViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GithubViewer/Pods-GithubViewer.debug.xcconfig"; sourceTree = "<group>"; };
+		C7AC32D821CB8D8200E4F17B /* ErrorHandlingRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandlingRoute.swift; sourceTree = "<group>"; };
 		FR_172257646910 /* MRRepoDetailContracts.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = MRRepoDetailContracts.swift; sourceTree = "<group>"; };
 		FR_214074212827 /* MRRepoListPresenter.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = MRRepoListPresenter.swift; sourceTree = "<group>"; };
 		FR_336216849331 /* MRRepoDetailView.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = MRRepoDetailView.swift; sourceTree = "<group>"; };
@@ -247,8 +243,8 @@
 			children = (
 				46E61A96218EFDAD008D130E /* Font */,
 				462D7342218D84AB004F06E6 /* Theme */,
-				462D733C218D82D9004F06E6 /* Configuration */,
 				462D7343218D84CE004F06E6 /* Constants.swift */,
+				46E61A6E218EDDB1008D130E /* Configuration.swift */,
 				462D7323218D7E8D004F06E6 /* Assets.xcassets */,
 				462D7328218D7E8D004F06E6 /* Info.plist */,
 			);
@@ -300,7 +296,6 @@
 				462D7340218D844D004F06E6 /* Sheduler */,
 				46E61A2C218EDB22008D130E /* Logger */,
 				46E61A46218EDB76008D130E /* Error */,
-				46E61A1E218D8BC8008D130E /* ErrorHandling */,
 				46E61AAE218EFE23008D130E /* Other */,
 			);
 			path = Common;
@@ -349,15 +344,6 @@
 				46E61A91218EFCB7008D130E /* MainAppCoordinator.swift */,
 			);
 			path = MainCoordinator;
-			sourceTree = "<group>";
-		};
-		462D733C218D82D9004F06E6 /* Configuration */ = {
-			isa = PBXGroup;
-			children = (
-				46E61A6D218EDDB1008D130E /* AppConfiguration.plist */,
-				46E61A6E218EDDB1008D130E /* Configuration.swift */,
-			);
-			path = Configuration;
 			sourceTree = "<group>";
 		};
 		462D733D218D82F4004F06E6 /* BackendRepository */ = {
@@ -544,15 +530,6 @@
 			path = Transition;
 			sourceTree = "<group>";
 		};
-		46E61A1E218D8BC8008D130E /* ErrorHandling */ = {
-			isa = PBXGroup;
-			children = (
-				46E61A1F218D8BC8008D130E /* AlertErrorHandler.swift */,
-				46E61A21218D8BC8008D130E /* ErrorHandler.swift */,
-			);
-			path = ErrorHandling;
-			sourceTree = "<group>";
-		};
 		46E61A27218D8CCB008D130E /* Alert */ = {
 			isa = PBXGroup;
 			children = (
@@ -631,6 +608,7 @@
 			isa = PBXGroup;
 			children = (
 				468B2781218F43410022638C /* ShareRoute.swift */,
+				C7AC32D821CB8D8200E4F17B /* ErrorHandlingRoute.swift */,
 			);
 			path = Routes;
 			sourceTree = "<group>";
@@ -784,7 +762,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				468B2776218F19C80022638C /* RepoCell.xib in Resources */,
-				46E61A6F218EDDB1008D130E /* AppConfiguration.plist in Resources */,
 				462D7327218D7E8D004F06E6 /* LaunchScreen.storyboard in Resources */,
 				462D7324218D7E8D004F06E6 /* Assets.xcassets in Resources */,
 				468B2758218F068E0022638C /* RepoListViewController.xib in Resources */,
@@ -857,6 +834,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				46E61AB6218EFF17008D130E /* BaseNavigationController.swift in Sources */,
+				C7AC32D921CB8D8200E4F17B /* ErrorHandlingRoute.swift in Sources */,
 				46E61A13218D8AD2008D130E /* CALayer+Animation.swift in Sources */,
 				46E61A6A218EDD43008D130E /* BackendAPIRequest.swift in Sources */,
 				46E61AAD218EFDAD008D130E /* AppFont.swift in Sources */,
@@ -869,7 +847,6 @@
 				46E61A11218D8AD2008D130E /* Double+Math.swift in Sources */,
 				46E61A93218EFCB7008D130E /* MainAppCoordinator.swift in Sources */,
 				46E61A86218EF915008D130E /* MRLoaderView.swift in Sources */,
-				46E61A22218D8BC8008D130E /* AlertErrorHandler.swift in Sources */,
 				46E61A95218EFD2E008D130E /* AppTheme.swift in Sources */,
 				46E61A81218EF8F3008D130E /* RippleView.swift in Sources */,
 				46E61A70218EDDB1008D130E /* Configuration.swift in Sources */,
@@ -890,7 +867,6 @@
 				468B2774218F19BC0022638C /* RepoCell.swift in Sources */,
 				46E61A15218D8AD2008D130E /* SpringIndicator.swift in Sources */,
 				46E61AC0218EFF7D008D130E /* AdapterManager.swift in Sources */,
-				46E61A24218D8BC8008D130E /* ErrorHandler.swift in Sources */,
 				46E61ABB218EFF36008D130E /* InfinityLoading.swift in Sources */,
 				46E61A30218EDB22008D130E /* Logger.swift in Sources */,
 				468B277C218F1D620022638C /* ShadowView.swift in Sources */,
