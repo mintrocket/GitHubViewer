@@ -32,7 +32,7 @@ public final class RepoCellAdapter: ListSectionController, Interactable {
     public override func didUpdate(to object: Any) {
         self.item = object as? Repo
         let width: CGFloat = collectionContext!.containerSize.width
-        let height: CGFloat = (~self).template
+        let height: CGFloat = self|.template
             .configure(item)
             .layout()
         self.size = CGSize(width: width, height: height)

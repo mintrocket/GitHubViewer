@@ -6,8 +6,3 @@ public protocol Converter {
 
     func convert(from item: FromValue) -> ToValue
 }
-
-infix operator <-
-public func <- <V, C: Converter>(value: V, converter: C) -> C.ToValue where V == C.FromValue {
-    return converter.convert(from: value)
-}

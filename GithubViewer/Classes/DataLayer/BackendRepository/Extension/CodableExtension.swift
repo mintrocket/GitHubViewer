@@ -50,7 +50,7 @@ extension KeyedDecodingContainer where Key == String {
     }
 }
 
-extension KeyedDecodingContainer {
+extension KeyedDecodingContainer  {
     subscript<T>(key: Key, default defaultValue: @autoclosure () -> T) -> T where T: Decodable {
         if let value = try? self.decodeIfPresent(T.self, forKey: key), let result = value {
             return result
@@ -119,23 +119,11 @@ extension Decoder {
         let container = try self.container(keyedBy: String.self)
         action(container)
     }
-    
-    subscript<T>(key: String, default defaultValue: @autoclosure () -> T) -> T where T: Decodable {
-        if let container = try? self.container(keyedBy: String.self) {
-            return container[key, default: defaultValue()]
-        }
-        return defaultValue()
-    }
-    
-    subscript<T>(key: String) -> T? where T: Decodable {
-        let container = try? self.container(keyedBy: String.self)
-        return container?[key]
-    }
 }
 
 extension Encoder {
-    func apply<T: CodingKey>(_ action: (inout KeyedEncodingContainer<T>) -> ()) {
-        var container = self.container(keyedBy: T.self)
+    func apply(_ action: (inout KeyedEncodingContainer<String>) -> ()) {
+        var container = self.container(keyedBy: String.self)
         action(&container)
     }
 }
