@@ -303,7 +303,7 @@ final class Paginator<T, P: Paging> {
     }
 
     private class State<T, P: Paging> {
-        unowned var paginator: Paginator<T, P>
+        weak var paginator: Paginator<T, P>!
         init(_ paginator: Paginator<T, P>) {
             self.paginator = paginator
         }

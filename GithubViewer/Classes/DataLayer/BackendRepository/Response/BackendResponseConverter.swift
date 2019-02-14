@@ -11,7 +11,7 @@ protocol BackendResponseConverter: class {
     /// - parameter data: Response from NetworkService
     /// - returns: (ResponseData?, Error?)
     func convert<T: BackendAPIRequest>(_ type: T.Type,
-                                       response data: NetworkManager.NetworkResponse) -> (ResponseData<T.ResponseObject>?, Error?)
+                                       response data: NetworkManager.NetworkResponse) -> (T.ResponseObject?, Error?)
 }
 
 public class JsonResponseConverter: BackendResponseConverter, Loggable {
@@ -20,7 +20,7 @@ public class JsonResponseConverter: BackendResponseConverter, Loggable {
     }
 
     func convert<T: BackendAPIRequest>(_ type: T.Type,
-                                       response data: NetworkManager.NetworkResponse) -> (ResponseData<T.ResponseObject>?, Error?) {
+                                       response data: NetworkManager.NetworkResponse) -> (T.ResponseObject?, Error?) {
         if (data.0 as NSData).length == 0 {
             return (nil, AppError.responseError(code: MRKitErrorCode.emptyResponse))
         }
@@ -28,8 +28,7 @@ public class JsonResponseConverter: BackendResponseConverter, Loggable {
         let model = try? JSONDecoder().decode(T.ResponseObject.self, from: data.0)
 
         if let responseData = model {
-            let res = ResponseData(statusCode: data.1, data: responseData, request: data.3, response: data.2)
-            return (res, nil)
+            return (responseData, nil)
         } else if let error = try? JSONDecoder().decode(ApiError.self, from: data.0) {
             return (nil, AppError.api(error: error))
         } else {

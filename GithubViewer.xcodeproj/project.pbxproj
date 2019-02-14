@@ -46,7 +46,6 @@
 		46E61A5D218EDC3A008D130E /* ObservableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A5B218EDC3A008D130E /* ObservableExtension.swift */; };
 		46E61A5E218EDC3A008D130E /* DictionaryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A5C218EDC3A008D130E /* DictionaryExtension.swift */; };
 		46E61A62218EDCEE008D130E /* BackendResponseConverter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A5F218EDCEE008D130E /* BackendResponseConverter.swift */; };
-		46E61A64218EDCEE008D130E /* ResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A61218EDCEE008D130E /* ResponseData.swift */; };
 		46E61A66218EDD0E008D130E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A65218EDD0E008D130E /* NetworkManager.swift */; };
 		46E61A6A218EDD43008D130E /* BackendAPIRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A67218EDD43008D130E /* BackendAPIRequest.swift */; };
 		46E61A6B218EDD43008D130E /* BackendConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A68218EDD43008D130E /* BackendConfiguration.swift */; };
@@ -139,7 +138,6 @@
 		46E61A5B218EDC3A008D130E /* ObservableExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableExtension.swift; sourceTree = "<group>"; };
 		46E61A5C218EDC3A008D130E /* DictionaryExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryExtension.swift; sourceTree = "<group>"; };
 		46E61A5F218EDCEE008D130E /* BackendResponseConverter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendResponseConverter.swift; sourceTree = "<group>"; };
-		46E61A61218EDCEE008D130E /* ResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResponseData.swift; sourceTree = "<group>"; };
 		46E61A65218EDD0E008D130E /* NetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		46E61A67218EDD43008D130E /* BackendAPIRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendAPIRequest.swift; sourceTree = "<group>"; };
 		46E61A68218EDD43008D130E /* BackendConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BackendConfiguration.swift; sourceTree = "<group>"; };
@@ -561,7 +559,6 @@
 			isa = PBXGroup;
 			children = (
 				46E61A5F218EDCEE008D130E /* BackendResponseConverter.swift */,
-				46E61A61218EDCEE008D130E /* ResponseData.swift */,
 			);
 			path = Response;
 			sourceTree = "<group>";
@@ -853,7 +850,6 @@
 				468B275E218F0A560022638C /* RepositoriesRequest.swift in Sources */,
 				46E61A6B218EDD43008D130E /* BackendConfiguration.swift in Sources */,
 				46E61A26218D8CA8008D130E /* MRAppAlertController.swift in Sources */,
-				46E61A64218EDCEE008D130E /* ResponseData.swift in Sources */,
 				46E61ABD218EFF36008D130E /* LanguageBehavior.swift in Sources */,
 				468B2769218F0C7F0022638C /* StringExtension.swift in Sources */,
 				46E61A29218EDAC3008D130E /* ShedulerProvider.swift in Sources */,

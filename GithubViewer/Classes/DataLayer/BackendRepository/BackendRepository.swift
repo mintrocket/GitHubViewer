@@ -11,7 +11,7 @@ class BackendRepositoryPart: DIPart {
 }
 
 protocol BackendRepository {
-    func request<T: BackendAPIRequest>(_ request: T) -> Single<ResponseData<T.ResponseObject>>
+    func request<T: BackendAPIRequest>(_ request: T) -> Single<T.ResponseObject>
 }
 
 final class BackendRepositoryImp: BackendRepository, Loggable {
@@ -28,9 +28,9 @@ final class BackendRepositoryImp: BackendRepository, Loggable {
                                              retrier: config.retrier)
     }
 
-    func request<T: BackendAPIRequest>(_ request: T) -> Single<ResponseData<T.ResponseObject>> {
+    func request<T: BackendAPIRequest>(_ request: T) -> Single<T.ResponseObject> {
         return self.createSequence(for: request)
-            .flatMap { [unowned self] data -> Single<ResponseData<T.ResponseObject>> in
+            .flatMap { [unowned self] data -> Single<T.ResponseObject> in
                 self.convertResponse(request: request, data: data)
         }
     }
@@ -59,11 +59,11 @@ final class BackendRepositoryImp: BackendRepository, Loggable {
     }
 
     private func convertResponse<T: BackendAPIRequest>(request: T,
-                                                       data: NetworkManager.NetworkResponse) -> Single<ResponseData<T.ResponseObject>> {
+                                                       data: NetworkManager.NetworkResponse) -> Single<T.ResponseObject> {
         return Single.deferred { [unowned self] in
-            var (response, error): (ResponseData<T.ResponseObject>?, Error?)
-            if request.customResponseConverter != nil {
-                (response, error) = request.customResponseConverter!.convert(T.self, response: data)
+            var (response, error): (T.ResponseObject?, Error?)
+            if let converter = request.customResponseConverter {
+                (response, error) = converter.convert(T.self, response: data)
             } else {
                 (response, error) = self.config.converter.convert(T.self, response: data)
             }

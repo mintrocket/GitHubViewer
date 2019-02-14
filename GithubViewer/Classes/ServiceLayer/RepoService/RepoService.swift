@@ -30,7 +30,6 @@ final class RepoServiceImp: RepoService {
             let request = RepositoriesRequest(since: id)
             return self.backendRepository
                 .request(request)
-                .map { $0.data }
         }
             .subscribeOn(self.schedulers.background)
             .observeOn(self.schedulers.main)
