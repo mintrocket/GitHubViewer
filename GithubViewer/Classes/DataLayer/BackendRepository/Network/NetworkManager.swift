@@ -131,11 +131,9 @@ open class NetworkManager: Loggable {
                        params: [String: Any]?,
                        headers: [String: String]?) -> URLRequest {
         var requestURL: URL = url
-        if let values = params {
+        if let values = params, method == .GET {
             let parameterString = values.stringFromHttpParameters()
-            if method == .GET {
-                requestURL = URL(string: "\(url)?\(parameterString)")!
-            }
+            requestURL = URL(string: "\(url)?\(parameterString)")!
         }
 
         var request = URLRequest(url: requestURL,
