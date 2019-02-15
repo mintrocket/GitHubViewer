@@ -72,4 +72,7 @@ extension BackendAPIRequest {
     }
 }
 
-public struct Unit: Decodable {}
+public struct Unit: Decodable, ExpressibleByNilLiteral {
+    public init() {}
+    public init(nilLiteral: ()) {}
+}

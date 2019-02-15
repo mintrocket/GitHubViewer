@@ -39,3 +39,25 @@ public class JsonResponseConverter: BackendResponseConverter, Loggable {
         }
     }
 }
+
+/// API RESPONSE EXAMPLE
+public final class ApiResponse<T: Decodable>: Decodable {
+    var status: Bool = true
+    var data: T?
+    var error: ApiError?
+    
+    public init(from decoder: Decoder) throws {
+        try decoder.apply { (values) in
+            status <- values["status"]
+            data <- values["data"]
+            error <- values["error"]
+        }
+        
+        if self.data == nil,
+           let type = T.self as? ExpressibleByNilLiteral.Type,
+           let result = type.init(nilLiteral: ()) as? T {
+            self.data = result
+        }
+    }
+}
+
