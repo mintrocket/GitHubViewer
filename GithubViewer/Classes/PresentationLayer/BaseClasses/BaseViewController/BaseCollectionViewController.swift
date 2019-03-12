@@ -126,11 +126,6 @@ class BaseCollectionViewController: BaseViewController, ListAdapterDataSource {
     public func emptyView(for listAdapter: ListAdapter) -> UIView? {
         return nil
     }
-
-    override func hideLoading() {
-        super.hideLoading()
-        self.stopRefreshing()
-    }
 }
 
 class InfinityCollectionViewController: BaseCollectionViewController {

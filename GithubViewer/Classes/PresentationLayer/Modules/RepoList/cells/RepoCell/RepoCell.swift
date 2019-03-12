@@ -14,6 +14,7 @@ public final class RepoCell: RippleViewCell {
         self.numberLabel.text = "\(item.id)"
         self.repoNameLabel.text = item.name
         self.descriptionLabel.text = item.desc
+        self.setNeedsLayout()
         return self
     }
 

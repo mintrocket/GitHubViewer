@@ -43,13 +43,15 @@ final class RepoDetailViewController: BaseViewController {
     // MARK: - Actions
 
     @objc func shareTapped() {
-        self.handler.share()
+        if self.isLoading == false {
+            self.handler.share()
+        }
     }
 }
 
 extension RepoDetailViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        self.hideLoading()
+        self.activityBag = nil
         UIView.animate(withDuration: 0.3) {
             self.webView.alpha = 1
         }
@@ -63,6 +65,6 @@ extension RepoDetailViewController: RepoDetailViewBehavior {
     
     func set(url: URL) {
         self.webView.load(URLRequest(url: url))
-        self.showLoading(fullscreen: false)
+        self.activityBag = self.showLoading(fullscreen: false)
     }
 }

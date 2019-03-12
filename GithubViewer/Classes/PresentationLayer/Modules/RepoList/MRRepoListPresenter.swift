@@ -49,10 +49,16 @@ extension RepoListPresenter: RepoListEventHandler {
 
     private func setupPaginator() {
         let refreshAction: Action<Bool> = { [weak view] show in
+             view?.pageLoading(show: show)
+        }
+        
+        var activity: ActivityBagProtocol?
+        _ = activity
+        let emptyLoadAction: Action<Bool> = { [weak view] show in
             if show {
-                view?.showLoading(fullscreen: false)
+                activity = view?.showLoading(fullscreen: false)
             } else {
-                view?.hideLoading()
+                activity = nil
             }
         }
 
@@ -67,16 +73,16 @@ extension RepoListPresenter: RepoListEventHandler {
                 }
             }
             .showErrorMessage { [weak view, weak router] error in
-                view?.hideLoading()
+                view?.pageLoading(show: false)
                 router?.show(error: error)
             }
-            .showEmptyError { [weak view, weak router] value in
-                view?.hideLoading()
+            .showEmptyError { [weak router] value in
+                activity = nil
                 if let error = value.error {
                     router?.show(error: error)
                 }
             }
             .showRefreshProgress(refreshAction)
-            .showEmptyProgress(refreshAction)
+            .showEmptyProgress(emptyLoadAction)
     }
 }

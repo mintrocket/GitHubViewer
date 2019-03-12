@@ -3,6 +3,7 @@ import UIKit
 
 class BaseViewController: UIViewController, WaitingBehavior, LanguageBehavior {
     let disposeBag = DisposeBag()
+    var activityBag: ActivityBagProtocol?
 
     public var statusBarStyle: UIStatusBarStyle = .default
 
@@ -44,19 +45,5 @@ class BaseViewController: UIViewController, WaitingBehavior, LanguageBehavior {
                                                                 style: .plain,
                                                                 target: nil,
                                                                 action: nil)
-    }
-
-    // MARK: - WaitingBehavior
-
-    public func showLoading(fullscreen: Bool) {
-        var target: UIViewController?
-        if !fullscreen {
-            target = self
-        }
-        MRViewContainer.show(with: target)
-    }
-
-    public func hideLoading() {
-        MRViewContainer.hide()
     }
 }

@@ -45,6 +45,6 @@ open class DependenciesConfigurationBase: DependenciesConfiguration, Loggable {
     }
 
     func setupLoader() {
-        MRViewContainer.configure(with: MRLoaderView.self)
+        MRLoaderManager.configure(with: MRLoaderView.self)
     }
 }

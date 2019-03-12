@@ -56,7 +56,7 @@
 		46E61A77218EF769008D130E /* DependenciesConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A75218EF769008D130E /* DependenciesConfiguration.swift */; };
 		46E61A78218EF769008D130E /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A76218EF769008D130E /* AppFramework.swift */; };
 		46E61A7A218EF7D8008D130E /* ClearableManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A79218EF7D8008D130E /* ClearableManager.swift */; };
-		46E61A7F218EF8E3008D130E /* MRViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A7E218EF8E3008D130E /* MRViewContainer.swift */; };
+		46E61A7F218EF8E3008D130E /* MRLoaderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A7E218EF8E3008D130E /* MRLoaderManager.swift */; };
 		46E61A81218EF8F3008D130E /* RippleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A80218EF8F3008D130E /* RippleView.swift */; };
 		46E61A85218EF915008D130E /* MRLoaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 46E61A83218EF915008D130E /* MRLoaderView.xib */; };
 		46E61A86218EF915008D130E /* MRLoaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A84218EF915008D130E /* MRLoaderView.swift */; };
@@ -148,7 +148,7 @@
 		46E61A75218EF769008D130E /* DependenciesConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DependenciesConfiguration.swift; sourceTree = "<group>"; };
 		46E61A76218EF769008D130E /* AppFramework.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFramework.swift; sourceTree = "<group>"; };
 		46E61A79218EF7D8008D130E /* ClearableManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClearableManager.swift; sourceTree = "<group>"; };
-		46E61A7E218EF8E3008D130E /* MRViewContainer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRViewContainer.swift; sourceTree = "<group>"; };
+		46E61A7E218EF8E3008D130E /* MRLoaderManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRLoaderManager.swift; sourceTree = "<group>"; };
 		46E61A80218EF8F3008D130E /* RippleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RippleView.swift; sourceTree = "<group>"; };
 		46E61A83218EF915008D130E /* MRLoaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRLoaderView.xib; sourceTree = "<group>"; };
 		46E61A84218EF915008D130E /* MRLoaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MRLoaderView.swift; sourceTree = "<group>"; };
@@ -618,7 +618,7 @@
 				468B277B218F1D620022638C /* ShadowView.swift */,
 				468B2779218F1D2B0022638C /* BorderedView.swift */,
 				46E61A80218EF8F3008D130E /* RippleView.swift */,
-				46E61A7E218EF8E3008D130E /* MRViewContainer.swift */,
+				46E61A7E218EF8E3008D130E /* MRLoaderManager.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -881,7 +881,7 @@
 				468B276B218F0CCB0022638C /* UIImageViewExtension.swift in Sources */,
 				46E61A77218EF769008D130E /* DependenciesConfiguration.swift in Sources */,
 				462D731D218D7E8B004F06E6 /* AppDelegate.swift in Sources */,
-				46E61A7F218EF8E3008D130E /* MRViewContainer.swift in Sources */,
+				46E61A7F218EF8E3008D130E /* MRLoaderManager.swift in Sources */,
 				46E61A88218EF945008D130E /* LoadableView.swift in Sources */,
 				46E61AC6218F002C008D130E /* NSObjectExtension.swift in Sources */,
 				46E61A1D218D8B1B008D130E /* Chaperone.swift in Sources */,

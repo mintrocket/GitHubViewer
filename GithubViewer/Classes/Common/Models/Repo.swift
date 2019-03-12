@@ -14,7 +14,7 @@ public final class Repo: NSObject, Codable {
             name <- values["name"]
             desc <- values["description"]
             owner <- values["owner"]
-            url <- (values["html_url"] <- URLConverter())
+            url <- values["html_url"] <- URLConverter()
         }
     }
     

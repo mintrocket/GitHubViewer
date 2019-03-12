@@ -14,6 +14,11 @@ final class RepoListViewController: InfinityCollectionViewController {
         self.addRefreshControl()
         self.handler.didLoad()
     }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        self.reload()
+    }
 
     override func setupStrings() {
         super.setupStrings()
@@ -30,14 +35,6 @@ final class RepoListViewController: InfinityCollectionViewController {
         self.handler.loadMore()
     }
 
-    override func showLoading(fullscreen: Bool) {
-        if fullscreen {
-            super.showLoading(fullscreen: fullscreen)
-        } else {
-            self.startRefreshing()
-        }
-    }
-
     // MARK: - Adapter creators
 
     override func adapterCreators() -> [AdapterCreator] {
@@ -50,6 +47,14 @@ final class RepoListViewController: InfinityCollectionViewController {
 }
 
 extension RepoListViewController: RepoListViewBehavior {
+    func pageLoading(show: Bool) {
+        if show {
+            self.startRefreshing()
+        } else {
+            self.stopRefreshing()
+        }
+    }
+    
     func set(items: [ListDiffable]) {
         self.items = items
         self.update()

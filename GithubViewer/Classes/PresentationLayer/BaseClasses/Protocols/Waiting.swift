@@ -1,24 +1,20 @@
 import UIKit
 
 public protocol WaitingBehavior: class {
-    func showLoading(fullscreen: Bool)
-    func hideLoading()
+    var isLoading: Bool { get }
+    func showLoading(fullscreen: Bool) -> ActivityBagProtocol
 }
 
 extension WaitingBehavior where Self: UIViewController {
-    func isLoading() -> Bool {
-        return MRViewContainer.isLoading()
+    public var isLoading: Bool {
+        return MRLoaderManager.isLoading()
     }
-
-    public func showLoading(fullscreen: Bool) {
+    
+    public func showLoading(fullscreen: Bool) -> ActivityBagProtocol {
         var target: UIViewController?
         if !fullscreen {
             target = self
         }
-        MRViewContainer.show(with: target)
-    }
-
-    public func hideLoading() {
-        MRViewContainer.hide()
+        return MRLoaderManager.show(with: target)
     }
 }
