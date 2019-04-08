@@ -5,17 +5,23 @@ platform :ios, '10.0'
 
 target 'GithubViewer' do
     #Network
-    pod 'Kingfisher', '4.10.0'
-    pod 'Alamofire', '4.7.2'
+    pod 'Kingfisher', '5.3.0'
+    pod 'Alamofire', '4.8.2'
 
     #Utils
-    pod 'DITranquillity', '3.5.1'
-    pod 'SwiftyBeaver', '1.6.1'
-    pod 'RxSwift', '4.3.1'
-    pod 'RxCocoa', '4.3.1'
-    pod 'SwiftDate', '5.0.12'
+    pod 'DITranquillity', '3.6.3'
+    pod 'RxSwift', '4.4.2'
+    pod 'RxCocoa', '4.4.2'
 
     #UI
     pod 'IGListKit', '3.4.0'
-    pod 'PinLayout', '1.8.6'
+    pod 'PinLayout', '1.8.7'
+    
+    post_install do |installer|
+        installer.pods_project.targets.each do |target|
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_VERSION'] = '5'
+            end
+        end
+    end
 end

@@ -50,6 +50,8 @@ public enum Animator {
             return .curveEaseOut
         case .easeInOut:
             return .curveEaseInOut
+        @unknown default:
+            fatalError()
         }
     }
 }

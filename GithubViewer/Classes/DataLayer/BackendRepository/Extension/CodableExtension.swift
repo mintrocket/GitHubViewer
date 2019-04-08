@@ -12,8 +12,7 @@ import Foundation
 extension KeyedDecodingContainer where Key == String {
     subscript<T>(key: Key, default defaultValue: @autoclosure () -> T) -> T where T: Decodable {
         if let data = self.find(key: key),
-            let value = try? data.container.decodeIfPresent(T.self, forKey: data.key),
-            let result = value {
+            let result = try? data.container.decodeIfPresent(T.self, forKey: data.key) {
             return result
         }
         return defaultValue()
@@ -52,7 +51,7 @@ extension KeyedDecodingContainer where Key == String {
 
 extension KeyedDecodingContainer  {
     subscript<T>(key: Key, default defaultValue: @autoclosure () -> T) -> T where T: Decodable {
-        if let value = try? self.decodeIfPresent(T.self, forKey: key), let result = value {
+        if let result = try? self.decodeIfPresent(T.self, forKey: key) {
             return result
         }
         return defaultValue()

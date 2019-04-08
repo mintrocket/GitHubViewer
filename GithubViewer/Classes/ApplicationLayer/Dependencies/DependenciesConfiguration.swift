@@ -39,7 +39,7 @@ open class DependenciesConfigurationBase: DependenciesConfiguration, Loggable {
     public func setupModulesDependencies() {
         // logger
         let logger = Logger()
-        let swiftyLogger = SwiftyBeaverLogger()
+        let swiftyLogger = SimpleLogger()
         logger.setupLogger(swiftyLogger)
         Logger.setSharedInstance(logger)
     }

@@ -127,8 +127,12 @@ private class WeakRef<T: AnyObject>: Hashable {
         self.value = value
     }
     
-    public var hashValue: Int {
-        return (self.value as? AnyHashable)?.hashValue ?? 0
+    func hash(into hasher: inout Hasher) {
+        if let value = self.value as? AnyHashable {
+            hasher.combine(value)
+        } else {
+            hasher.combine(0)
+        }
     }
 }
 

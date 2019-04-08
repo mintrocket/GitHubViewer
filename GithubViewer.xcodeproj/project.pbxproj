@@ -40,7 +40,6 @@
 		46E61A29218EDAC3008D130E /* ShedulerProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A28218EDAC2008D130E /* ShedulerProvider.swift */; };
 		46E61A2B218EDADB008D130E /* Paginator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A2A218EDADB008D130E /* Paginator.swift */; };
 		46E61A30218EDB22008D130E /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A2D218EDB22008D130E /* Logger.swift */; };
-		46E61A31218EDB22008D130E /* SwiftyBeaverLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A2E218EDB22008D130E /* SwiftyBeaverLogger.swift */; };
 		46E61A58218EDB76008D130E /* ErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A47218EDB76008D130E /* ErrorCodes.swift */; };
 		46E61A59218EDB76008D130E /* AppError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A48218EDB76008D130E /* AppError.swift */; };
 		46E61A5D218EDC3A008D130E /* ObservableExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46E61A5B218EDC3A008D130E /* ObservableExtension.swift */; };
@@ -88,6 +87,7 @@
 		BF_679588664069 /* MRRepoDetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_849103704991 /* MRRepoDetailRouter.swift */; };
 		BF_739475135604 /* MRRepoDetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_655853033878 /* MRRepoDetailPresenter.swift */; };
 		BF_783543032456 /* MRRepoDetailContracts.swift in Sources */ = {isa = PBXBuildFile; fileRef = FR_172257646910 /* MRRepoDetailContracts.swift */; };
+		C713DD93225B23E9000BA72C /* SimpleLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C713DD92225B23E9000BA72C /* SimpleLogger.swift */; };
 		C7AC32D921CB8D8200E4F17B /* ErrorHandlingRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7AC32D821CB8D8200E4F17B /* ErrorHandlingRoute.swift */; };
 /* End PBXBuildFile section */
 
@@ -132,7 +132,6 @@
 		46E61A28218EDAC2008D130E /* ShedulerProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShedulerProvider.swift; sourceTree = "<group>"; };
 		46E61A2A218EDADB008D130E /* Paginator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Paginator.swift; sourceTree = "<group>"; };
 		46E61A2D218EDB22008D130E /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
-		46E61A2E218EDB22008D130E /* SwiftyBeaverLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftyBeaverLogger.swift; sourceTree = "<group>"; };
 		46E61A47218EDB76008D130E /* ErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorCodes.swift; sourceTree = "<group>"; };
 		46E61A48218EDB76008D130E /* AppError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppError.swift; sourceTree = "<group>"; };
 		46E61A5B218EDC3A008D130E /* ObservableExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObservableExtension.swift; sourceTree = "<group>"; };
@@ -170,6 +169,7 @@
 		46E61AC3218EFFF0008D130E /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		46E61AC5218F002C008D130E /* NSObjectExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSObjectExtension.swift; sourceTree = "<group>"; };
 		BF48A87BBD0FDE69646F7EAD /* Pods-GithubViewer.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GithubViewer.debug.xcconfig"; path = "Pods/Target Support Files/Pods-GithubViewer/Pods-GithubViewer.debug.xcconfig"; sourceTree = "<group>"; };
+		C713DD92225B23E9000BA72C /* SimpleLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleLogger.swift; sourceTree = "<group>"; };
 		C7AC32D821CB8D8200E4F17B /* ErrorHandlingRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandlingRoute.swift; sourceTree = "<group>"; };
 		FR_172257646910 /* MRRepoDetailContracts.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = MRRepoDetailContracts.swift; sourceTree = "<group>"; };
 		FR_214074212827 /* MRRepoListPresenter.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = MRRepoListPresenter.swift; sourceTree = "<group>"; };
@@ -540,7 +540,7 @@
 			isa = PBXGroup;
 			children = (
 				46E61A2D218EDB22008D130E /* Logger.swift */,
-				46E61A2E218EDB22008D130E /* SwiftyBeaverLogger.swift */,
+				C713DD92225B23E9000BA72C /* SimpleLogger.swift */,
 			);
 			path = Logger;
 			sourceTree = "<group>";
@@ -781,11 +781,10 @@
 				"${BUILT_PRODUCTS_DIR}/IGListKit/IGListKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/PinLayout/PinLayout.framework",
+				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftDate/SwiftDate.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftLazy/SwiftLazy.framework",
-				"${BUILT_PRODUCTS_DIR}/SwiftyBeaver/SwiftyBeaver.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
@@ -794,11 +793,10 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/IGListKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PinLayout.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftDate.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftLazy.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyBeaver.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -858,6 +856,7 @@
 				46E61A74218EE78F008D130E /* ApiError.swift in Sources */,
 				46E61A1C218D8B1B008D130E /* Router.swift in Sources */,
 				46E61AB4218EFF17008D130E /* BaseCollectionViewController.swift in Sources */,
+				C713DD93225B23E9000BA72C /* SimpleLogger.swift in Sources */,
 				46E61A58218EDB76008D130E /* ErrorCodes.swift in Sources */,
 				46E61AC4218EFFF0008D130E /* Operators.swift in Sources */,
 				468B2774218F19BC0022638C /* RepoCell.swift in Sources */,
@@ -870,7 +869,6 @@
 				46E61A62218EDCEE008D130E /* BackendResponseConverter.swift in Sources */,
 				468B2766218F0C540022638C /* Converter.swift in Sources */,
 				46E61A12218D8AD2008D130E /* RefreshIndicator.swift in Sources */,
-				46E61A31218EDB22008D130E /* SwiftyBeaverLogger.swift in Sources */,
 				46E61A92218EFCB7008D130E /* AppRouter.swift in Sources */,
 				46E61A72218EE6CB008D130E /* CodableExtension.swift in Sources */,
 				46E61A10218D8AD2008D130E /* AnimationProcess.swift in Sources */,
@@ -1054,7 +1052,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mintroket.GithubViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1074,7 +1072,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.mintroket.GithubViewer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.2;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
