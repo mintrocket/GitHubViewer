@@ -3,25 +3,17 @@ import DITranquillity
 
 final class RepoListPart: DIPart {
     static func load(container: DIContainer) {
-        container.register1(RepoListRouter.init)
-            .lifetime(.objectGraph)
-
-        container.register(RepoListPresenter.init)
+        container.register1(RepoListPresenter.init)
             .as(RepoListEventHandler.self)
-            .lifetime(.objectGraph)
-
-        container.register {
-                RepoListViewController()
-            }
-            .as(RepoListViewBehavior.self)
-            .injection(cycle: true, { $0.handler = $1 })
             .lifetime(.objectGraph)
     }
 }
 
 final class RepoListAssembly {
     class func createModule() -> RepoListViewController {
-        let module: RepoListViewController = MainAppCoordinator.shared.container.resolve() 
+        let module = RepoListViewController()
+        module.handler = MainAppCoordinator.shared.container.resolve()
+        module.handler.bind(view: module, router: RepoListRouter(view: module))
         return module
     }
 }

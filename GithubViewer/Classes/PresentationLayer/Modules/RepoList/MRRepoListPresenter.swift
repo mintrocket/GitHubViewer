@@ -4,8 +4,8 @@ import UIKit
 
 final class RepoListPresenter {
 
-    weak var view: RepoListViewBehavior!
-    var router: RepoListRouter
+    private weak var view: RepoListViewBehavior!
+    private var router: RepoListRoutable!
 
     private let repoService: RepoService
 
@@ -18,16 +18,27 @@ final class RepoListPresenter {
         return self.repoService.fetchRepos(since: id)
     }
 
-    init(view: RepoListViewBehavior,
-         router: RepoListRouter,
-         repoService: RepoService) {
-        self.view = view
-        self.router = router
+    init(repoService: RepoService) {
         self.repoService = repoService
     }
 }
 
+extension RepoListPresenter: RouterCommandResponder {
+    func respond(command: RouteCommand) -> Bool {
+        if command is TestCommand {
+            print("TEST COMMAND EXECUTED")
+        }
+        return false
+    }
+}
+
 extension RepoListPresenter: RepoListEventHandler {
+    func bind(view: RepoListViewBehavior, router: RepoListRoutable) {
+        self.view = view
+        self.router = router
+        self.router.responder = self
+    }
+    
     func didLoad() {
         self.setupPaginator()
         self.refresh()

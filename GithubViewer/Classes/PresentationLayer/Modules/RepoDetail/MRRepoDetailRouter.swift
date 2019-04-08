@@ -2,6 +2,7 @@ import UIKit
 
 // MARK: - Router
 
-final class RepoDetailRouter: BaseRouter<RepoDetailViewController>, ShareRoute {
+protocol RepoDetailRoutable: BaseRouter, ShareRoute {}
 
+final class RepoDetailRouter: BaseRouter, RepoDetailRoutable {
 }

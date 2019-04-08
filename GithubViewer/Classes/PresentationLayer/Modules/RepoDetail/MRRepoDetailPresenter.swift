@@ -4,19 +4,20 @@ import UIKit
 
 final class RepoDetailPresenter {
 
-    weak var view: RepoDetailViewBehavior!
-    var router: RepoDetailRouter
+    private weak var view: RepoDetailViewBehavior!
+    private var router: RepoDetailRoutable!
 
     private var repo: Repo!
+}
 
-    init(view: RepoDetailViewBehavior,
-         router: RepoDetailRouter) {
+public final class TestCommand: RouteCommand {}
+
+extension RepoDetailPresenter: RepoDetailEventHandler {
+    func bind(view: RepoDetailViewBehavior, router: RepoDetailRoutable) {
         self.view = view
         self.router = router
     }
-}
-
-extension RepoDetailPresenter: RepoDetailEventHandler {
+    
     func moduleDidCreated(_ repo: Repo) {
         self.repo = repo
     }
@@ -26,6 +27,7 @@ extension RepoDetailPresenter: RepoDetailEventHandler {
         if let url = self.repo?.url {
             self.view.set(url: url)
         }
+        self.router.execute(TestCommand())
     }
 
     func share() {

@@ -10,5 +10,6 @@ protocol RepoListViewBehavior: WaitingBehavior {
 }
 
 protocol RepoListEventHandler: ViewControllerEventHandler, InfinityLoadingEventHandler {
+    func bind(view: RepoListViewBehavior, router: RepoListRoutable)
     func select(value: Repo)
 }

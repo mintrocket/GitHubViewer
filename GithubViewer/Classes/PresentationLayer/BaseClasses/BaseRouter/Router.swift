@@ -1,15 +1,36 @@
 import UIKit
 
-protocol RouterProtocol: class {
-    associatedtype ViewController: UIViewController
-    var controller: ViewController! { get }
+protocol RouteCommand {}
+
+protocol RouterCommandResponder: class {
+    func respond(command: RouteCommand) -> Bool
 }
 
-class BaseRouter<U>: RouterProtocol, ErrorHandlingRoute where U: UIViewController {
-    typealias ViewController = U
-    weak var controller: ViewController!
+protocol Router: class {
+    var parentRouter: Router? { get }
+    var responder: RouterCommandResponder? { get set }
+    func execute(_ command: RouteCommand)
+}
 
-    init(view: ViewController) {
+protocol RouterProtocol: Router {
+    var controller: UIViewController! { get }
+}
+
+class BaseRouter: RouterProtocol, ErrorHandlingRoute {
+    weak var controller: UIViewController!
+    weak var responder: RouterCommandResponder?
+    
+    private(set) weak var parentRouter: Router?
+    
+    init(view: UIViewController, parent: Router? = nil) {
         self.controller = view
+        self.parentRouter = parent
+    }
+    
+    func execute(_ command: RouteCommand) {
+        if self.responder?.respond(command: command) == true {
+            return
+        }
+        self.parentRouter?.execute(command)
     }
 }

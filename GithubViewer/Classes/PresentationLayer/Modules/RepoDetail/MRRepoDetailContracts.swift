@@ -8,6 +8,7 @@ protocol RepoDetailViewBehavior: WaitingBehavior {
 }
 
 protocol RepoDetailEventHandler: ViewControllerEventHandler {
+    func bind(view: RepoDetailViewBehavior, router: RepoDetailRoutable)
     func moduleDidCreated(_ repo: Repo)
     func share()
 }
