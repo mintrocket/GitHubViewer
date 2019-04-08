@@ -7,7 +7,7 @@ public class AppFramework: DIFramework {
         container.append(part: OtherPart.self)
         container.append(part: RepositoriesPart.self)
         container.append(part: ServicesPart.self)
-        container.append(part: ControllersPart.self)
+        container.append(part: PersentersPart.self)
     }
 }
 
@@ -41,8 +41,7 @@ private class ServicesPart: DIPart {
     }
 }
 
-// ONLY ANOTHER CONTROLLER PARTS
-private class ControllersPart: DIPart {
+private class PersentersPart: DIPart {
     static let parts: [DIPart.Type] = [
         RepoListPart.self,
         RepoDetailPart.self

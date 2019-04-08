@@ -1,4 +1,13 @@
 import UIKit
+import DITranquillity
+
+final class RepoDetailPart: DIPart {
+    static func load(container: DIContainer) {
+        container.register(RepoDetailPresenter.init)
+            .as(RepoDetailEventHandler.self)
+            .lifetime(.objectGraph)
+    }
+}
 
 // MARK: - Presenter
 
