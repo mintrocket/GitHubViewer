@@ -71,7 +71,7 @@ extension RepoListPresenter: RepoListEventHandler {
              view?.pageLoading(show: show)
         }
         
-        var activity: ActivityBagProtocol?
+        var activity: ActivityDisposable?
         _ = activity
         let emptyLoadAction: Action<Bool> = { [weak view] show in
             if show {

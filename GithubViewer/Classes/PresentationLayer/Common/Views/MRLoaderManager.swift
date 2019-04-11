@@ -20,8 +20,8 @@ public final class MRLoaderManager: NSObject {
         self.type = type
         super.init()
     }
-    
-    private func createView() -> (view: UIView, loader: Loader, activity: ActivityBagProtocol) {
+
+    private func createView() -> (view: UIView, loader: Loader, activity: ActivityDisposable) {
         let view = UIView(frame: UIScreen.main.bounds)
         
         let custom = self.type.init()
@@ -40,9 +40,9 @@ public final class MRLoaderManager: NSObject {
     public static func configure<T>(with type: T.Type) where T: LoaderView {
         MRLoaderManager.shared = MRLoaderManager(type: type)
     }
-    
+
     public static func isLoading() -> Bool {
-       return !self.shared.globalHolder.isEmpty() || !self.shared.viewHolder.isEmpty()
+        return !self.shared.globalHolder.isEmpty() || !self.shared.viewHolder.isEmpty()
     }
 
     private func updateFrame(for view: UIView) {
@@ -55,11 +55,11 @@ public final class MRLoaderManager: NSObject {
 
     // MARK: - Transition
 
-    public class func show(with controller: UIViewController? = nil, animated: Bool = true) -> ActivityBagProtocol {
+    public class func show(with controller: UIViewController? = nil, animated: Bool = true) -> ActivityDisposable {
         let (view, loader, bag) = MRLoaderManager.shared.createView()
         var target: UIView?
         
-        var resultBag: ActivityBagProtocol = bag
+        var resultBag: ActivityDisposable = bag
         if let targetView = controller?.view {
             if self.shared.viewHolder.isEmpty(view: targetView) {
                 target = targetView
@@ -136,16 +136,33 @@ private class WeakRef<T: AnyObject>: Hashable {
     }
 }
 
-public protocol ActivityBagProtocol: class {
+public protocol ActivityDisposable: class {
+    var uuid: UUID { get }
     func onDisposed(_ action: @escaping () -> Void)
 }
 
-private final class ActivityBag: Hashable, ActivityBagProtocol {
-    private var uuid: UUID = UUID()
-    private var disposeHandlers: [() -> Void] = []
-    private var rotateHandler: (() -> ())?
+public extension Array where Element == ActivityDisposable {
+    mutating func append(_ item: ActivityDisposable?) {
+        if let value = item {
+            self.append(value)
+        }
+    }
     
-    fileprivate init(rotated: (() -> ())?) {
+    mutating func remove(_ item: ActivityDisposable?) {
+        if let item = item {
+            self.removeAll(where: { item.uuid == $0.uuid })
+        }
+    }
+}
+
+public final class ActivityBag: Hashable, ActivityDisposable {
+    public private(set) var uuid: UUID = UUID()
+    private var disposeHandlers: [() -> Void] = []
+    private var rotateHandler: (() -> Void)?
+    
+    init() {}
+    
+    fileprivate init(rotated: (() -> Void)?) {
         self.rotateHandler = rotated
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(self.rotated),
@@ -157,7 +174,7 @@ private final class ActivityBag: Hashable, ActivityBagProtocol {
         self.rotateHandler?()
     }
     
-    func onDisposed(_ action: @escaping () -> Void) {
+    public func onDisposed(_ action: @escaping () -> Void) {
         self.disposeHandlers.append(action)
     }
     
@@ -166,16 +183,20 @@ private final class ActivityBag: Hashable, ActivityBagProtocol {
     }
     
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(uuid)
+        hasher.combine(self.uuid)
     }
     
     deinit {
-        self.disposeHandlers.forEach { $0() }
+        let handlers = self.disposeHandlers
+        DispatchQueue.main.async {
+            handlers.forEach { $0() }
+        }
         NotificationCenter.default.removeObserver(self)
     }
 }
 
-private final class ActivityGlobalHolder: ActivityBagProtocol {
+private final class ActivityGlobalHolder: ActivityDisposable {
+    private(set) var uuid: UUID = UUID()
     private var references: [WeakRef<AnyObject>] = []
     private var disposeHandler: (() -> Void)?
     
@@ -188,7 +209,7 @@ private final class ActivityGlobalHolder: ActivityBagProtocol {
         return self.references.isEmpty
     }
     
-    func append(_ item: ActivityBagProtocol) {
+    func append(_ item: ActivityDisposable) {
         self.references.append(WeakRef(value: item))
         
         item.onDisposed { [weak self] in
@@ -211,7 +232,8 @@ private final class ActivityGlobalHolder: ActivityBagProtocol {
     }
 }
 
-private final class ActivityViewHolder: ActivityBagProtocol {
+private final class ActivityViewHolder: ActivityDisposable {
+    private(set) var uuid: UUID = UUID()
     private var references: [WeakRef<UIView>: [WeakRef<AnyObject>]] = [:]
     private var disposeHandler: (() -> Void)?
     
@@ -221,7 +243,7 @@ private final class ActivityViewHolder: ActivityBagProtocol {
                 values.filter { $0.value != nil }
             }.filter {
                 !$0.value.isEmpty
-            }
+        }
     }
     
     func isEmpty(view: UIView) -> Bool {
@@ -235,7 +257,7 @@ private final class ActivityViewHolder: ActivityBagProtocol {
         return self.references.isEmpty
     }
     
-    func append(item: ActivityBagProtocol, for view: UIView) {
+    func append(item: ActivityDisposable, for view: UIView) {
         let key = WeakRef(value: view)
         self.references[key, default: []].append(WeakRef(value: item))
         item.onDisposed { [weak self] in

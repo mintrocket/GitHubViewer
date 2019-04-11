@@ -6,6 +6,7 @@ import WebKit
 final class RepoDetailViewController: BaseViewController {
 
     var handler: RepoDetailEventHandler!
+    private var activityBag: ActivityDisposable?
 
     private lazy var webView: WKWebView = {
         let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())

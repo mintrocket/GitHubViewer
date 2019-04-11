@@ -13,7 +13,7 @@ final class {{ name }}Part: DIPart {
 
 final class {{ name }}Presenter {
     private weak var view: {{ name }}ViewBehavior!
-    private var router: {{ name }}Router!
+    private var router: {{ name }}Routable!
 }
 
 extension {{ name }}Presenter: {{ name }}EventHandler {

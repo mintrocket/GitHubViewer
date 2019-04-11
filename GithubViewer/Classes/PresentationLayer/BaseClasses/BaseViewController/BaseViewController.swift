@@ -3,7 +3,6 @@ import UIKit
 
 class BaseViewController: UIViewController, WaitingBehavior, LanguageBehavior {
     let disposeBag = DisposeBag()
-    var activityBag: ActivityBagProtocol?
 
     public var statusBarStyle: UIStatusBarStyle = .default
 
