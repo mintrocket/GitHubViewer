@@ -11,16 +11,16 @@ public final class MRLoaderManager: NSObject {
     private var type: LoaderView.Type
     private var globalHolder: ActivityGlobalHolder = .init()
     private var viewHolder: ActivityViewHolder = .init()
-
+    
     private class func getWindow() -> UIWindow? {
         return UIApplication.shared.windows.filter { $0.windowLevel < UIWindow.Level.alert }.last
     }
-
+    
     private init<T>(type: T.Type) where T: LoaderView {
         self.type = type
         super.init()
     }
-
+    
     private func createView() -> (view: UIView, loader: Loader, activity: ActivityDisposable) {
         let view = UIView(frame: UIScreen.main.bounds)
         
@@ -36,15 +36,15 @@ public final class MRLoaderManager: NSObject {
         
         return (view, custom, bag)
     }
-
+    
     public static func configure<T>(with type: T.Type) where T: LoaderView {
         MRLoaderManager.shared = MRLoaderManager(type: type)
     }
-
+    
     public static func isLoading() -> Bool {
         return !self.shared.globalHolder.isEmpty() || !self.shared.viewHolder.isEmpty()
     }
-
+    
     private func updateFrame(for view: UIView) {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.02) {
             view.frame = UIScreen.main.bounds
@@ -52,9 +52,9 @@ public final class MRLoaderManager: NSObject {
             view.frame.origin.y = point.y
         }
     }
-
+    
     // MARK: - Transition
-
+    
     public class func show(with controller: UIViewController? = nil, animated: Bool = true) -> ActivityDisposable {
         let (view, loader, bag) = MRLoaderManager.shared.createView()
         var target: UIView?
@@ -64,14 +64,12 @@ public final class MRLoaderManager: NSObject {
             if self.shared.viewHolder.isEmpty(view: targetView) {
                 target = targetView
             }
-            resultBag = self.shared.viewHolder
-            self.shared.viewHolder.append(item: bag, for: targetView)
+            resultBag = self.shared.viewHolder.append(item: bag, for: targetView)
         } else {
             if self.shared.globalHolder.isEmpty() {
                 target = self.getWindow()
             }
-            resultBag = self.shared.globalHolder
-            self.shared.globalHolder.append(bag)
+            resultBag = self.shared.globalHolder.append(bag)
         }
         
         view.alpha = 0
@@ -90,7 +88,7 @@ public final class MRLoaderManager: NSObject {
         loader.start()
         return bag
     }
-
+    
     private class func hide(view: UIView, loader: Loader, delay: TimeInterval = 0, animated: Bool = true) {
         loader.stop()
         if animated {
@@ -102,7 +100,7 @@ public final class MRLoaderManager: NSObject {
             view.removeFromSuperview()
         }
     }
-
+    
     fileprivate func constraints(view: UIView) {
         let views = ["view": view]
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|[view]|",
@@ -195,34 +193,21 @@ public final class ActivityBag: Hashable, ActivityDisposable {
     }
 }
 
-private final class ActivityGlobalHolder: ActivityDisposable {
+private final class ActivityGlobalHolder {
     private(set) var uuid: UUID = UUID()
-    private var references: [WeakRef<AnyObject>] = []
+    private weak var activity: ActivityDisposable?
     private var disposeHandler: (() -> Void)?
     
-    private func update() {
-        self.references = self.references.filter { $0.value != nil }
-    }
-    
     func isEmpty() -> Bool {
-        self.update()
-        return self.references.isEmpty
+        return self.activity == nil
     }
     
-    func append(_ item: ActivityDisposable) {
-        self.references.append(WeakRef(value: item))
-        
-        item.onDisposed { [weak self] in
-            guard let this = self else {
-                return
-            }
-            
-            this.update()
-            if this.references.isEmpty {
-                this.disposeHandler?()
-                this.disposeHandler = nil
-            }
+    func append(_ item: ActivityDisposable) -> ActivityDisposable {
+        if let activity = self.activity {
+            return activity
         }
+        self.activity = item
+        return item
     }
     
     func onDisposed(_ action: @escaping () -> Void) {
@@ -232,24 +217,22 @@ private final class ActivityGlobalHolder: ActivityDisposable {
     }
 }
 
-private final class ActivityViewHolder: ActivityDisposable {
+private final class ActivityViewHolder {
     private(set) var uuid: UUID = UUID()
-    private var references: [WeakRef<UIView>: [WeakRef<AnyObject>]] = [:]
+    private var references: [WeakRef<UIView>: WeakRef<AnyObject>] = [:]
     private var disposeHandler: (() -> Void)?
     
     private func update() {
         self.references = self.references
-            .mapValues { values in
-                values.filter { $0.value != nil }
-            }.filter {
-                !$0.value.isEmpty
-        }
+            .filter({ (_, value) -> Bool in
+                value.value != nil
+            })
     }
     
     func isEmpty(view: UIView) -> Bool {
         self.update()
         let key = WeakRef(value: view)
-        return self.references[key, default: []].isEmpty
+        return self.references[key] == nil
     }
     
     func isEmpty() -> Bool {
@@ -257,26 +240,14 @@ private final class ActivityViewHolder: ActivityDisposable {
         return self.references.isEmpty
     }
     
-    func append(item: ActivityDisposable, for view: UIView) {
+    func append(item: ActivityDisposable, for view: UIView) -> ActivityDisposable {
         let key = WeakRef(value: view)
-        self.references[key, default: []].append(WeakRef(value: item))
-        item.onDisposed { [weak self] in
-            guard let this = self else {
-                return
-            }
-            
-            this.update()
-            if this.references[key, default: []].isEmpty {
-                this.disposeHandler?()
-                this.references.removeValue(forKey: key)
-                this.disposeHandler = nil
-            }
+        self.update()
+        if let activity = self.references[key]?.value as? ActivityDisposable {
+            return activity
         }
-    }
-    
-    func onDisposed(_ action: @escaping () -> Void) {
-        if self.disposeHandler == nil {
-            self.disposeHandler = action
-        }
+        
+        self.references[key] = WeakRef(value: item)
+        return item
     }
 }
