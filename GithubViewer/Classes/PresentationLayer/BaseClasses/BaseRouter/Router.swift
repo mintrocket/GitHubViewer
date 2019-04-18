@@ -16,7 +16,9 @@ protocol RouterProtocol: Router {
     var controller: UIViewController! { get }
 }
 
-class BaseRouter: RouterProtocol, ErrorHandlingRoute {
+protocol BaseRoutable: RouterProtocol, ErrorHandlingRoute {}
+
+class BaseRouter: BaseRoutable {
     weak var controller: UIViewController!
     weak var responder: RouterCommandResponder?
     
