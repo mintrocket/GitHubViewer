@@ -9,11 +9,12 @@ PODS:
   - IGListKit/Diffing (3.4.0)
   - Kingfisher (5.3.0)
   - PinLayout (1.8.7)
-  - RxAtomic (4.4.2)
-  - RxCocoa (4.4.2):
-    - RxSwift (>= 4.4.2, ~> 4.4)
-  - RxSwift (4.4.2):
-    - RxAtomic (>= 4.4.2, ~> 4.4)
+  - RxCocoa (5.0.0):
+    - RxRelay (~> 5)
+    - RxSwift (~> 5)
+  - RxRelay (5.0.0):
+    - RxSwift (~> 5)
+  - RxSwift (5.0.0)
   - SwiftLazy (1.1.3)
 
 DEPENDENCIES:
@@ -22,8 +23,8 @@ DEPENDENCIES:
   - IGListKit (= 3.4.0)
   - Kingfisher (= 5.3.0)
   - PinLayout (= 1.8.7)
-  - RxCocoa (= 4.4.2)
-  - RxSwift (= 4.4.2)
+  - RxCocoa (= 5.0.0)
+  - RxSwift (= 5.0.0)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -32,8 +33,8 @@ SPEC REPOS:
     - IGListKit
     - Kingfisher
     - PinLayout
-    - RxAtomic
     - RxCocoa
+    - RxRelay
     - RxSwift
     - SwiftLazy
 
@@ -43,11 +44,11 @@ SPEC CHECKSUMS:
   IGListKit: 7a5d788e9fb746bcd402baa8e8b24bc3bd2a5a07
   Kingfisher: 4692c783ffb99e9e2e40a6eb3e518c3b96c6fa8c
   PinLayout: a0722a5c8f0e0168a9c091ffe4930dabf0c8582c
-  RxAtomic: d00e97c10db88c6f08540e0bf2752fc5a2404167
-  RxCocoa: 477990dc3b4c3ff55fb0ac77e1cc06244e0aaec8
-  RxSwift: 74c29b693c8e42b0f64400e8b06564575742d649
+  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
+  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
+  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   SwiftLazy: 7ace993ccc9e1773ddf3a7bb309ed0182f469366
 
-PODFILE CHECKSUM: b37055b1c8e16091d5b25558b1259bc1a9c2cbc9
+PODFILE CHECKSUM: eaf85c6540e9384a3a67da544afca4f86918b143
 
 COCOAPODS: 1.5.3

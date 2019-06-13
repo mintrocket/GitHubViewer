@@ -9,7 +9,7 @@ public extension ObservableType {
     }
 }
 
-public extension PrimitiveSequenceType where Self.TraitType == RxSwift.SingleTrait {
+public extension PrimitiveSequenceType where Self.Trait == RxSwift.SingleTrait {
     func asVoid() -> Single<Void> {
         return flatMap { _ in
             Single.just(())

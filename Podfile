@@ -10,8 +10,8 @@ target 'GithubViewer' do
 
     #Utils
     pod 'DITranquillity', '3.6.3'
-    pod 'RxSwift', '4.4.2'
-    pod 'RxCocoa', '4.4.2'
+    pod 'RxSwift', '5.0.0'
+    pod 'RxCocoa', '5.0.0'
 
     #UI
     pod 'IGListKit', '3.4.0'

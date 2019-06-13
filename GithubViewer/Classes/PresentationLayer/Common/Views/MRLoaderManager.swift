@@ -21,7 +21,7 @@ public final class MRLoaderManager: NSObject {
         super.init()
     }
     
-    private func createView() -> (view: UIView, loader: Loader, activity: ActivityDisposable) {
+    private func createView() -> (view: UIView, loader: Loader, activity: Activity) {
         let view = UIView(frame: UIScreen.main.bounds)
         
         let custom = self.type.init()
@@ -30,11 +30,11 @@ public final class MRLoaderManager: NSObject {
         view.addSubview(custom)
         self.constraints(view: custom)
         
-        let bag = ActivityBag { [weak self] in
+        let activity = ActivityItem { [weak self] in
             self?.updateFrame(for: view)
         }
         
-        return (view, custom, bag)
+        return (view, custom, activity)
     }
     
     public static func configure<T>(with type: T.Type) where T: LoaderView {
@@ -56,20 +56,20 @@ public final class MRLoaderManager: NSObject {
     // MARK: - Transition
     
     public class func show(with controller: UIViewController? = nil, animated: Bool = true) -> ActivityDisposable {
-        let (view, loader, bag) = MRLoaderManager.shared.createView()
+        let (view, loader, activity) = MRLoaderManager.shared.createView()
         var target: UIView?
         
-        var resultBag: ActivityDisposable = bag
+        var resultActivity: Activity = activity
         if let targetView = controller?.view {
             if self.shared.viewHolder.isEmpty(view: targetView) {
                 target = targetView
             }
-            resultBag = self.shared.viewHolder.append(item: bag, for: targetView)
+            resultActivity = self.shared.viewHolder.append(item: activity, for: targetView)
         } else {
             if self.shared.globalHolder.isEmpty() {
                 target = self.getWindow()
             }
-            resultBag = self.shared.globalHolder.append(bag)
+            resultActivity = self.shared.globalHolder.append(activity)
         }
         
         view.alpha = 0
@@ -82,11 +82,11 @@ public final class MRLoaderManager: NSObject {
         }
         MRLoaderManager.shared.updateFrame(for: view)
         
-        resultBag.onDisposed {
+        resultActivity.onDisposed {
             MRLoaderManager.hide(view: view, loader: loader)
         }
         loader.start()
-        return bag
+        return ActivityHolder(activity)
     }
     
     private class func hide(view: UIView, loader: Loader, delay: TimeInterval = 0, animated: Bool = true) {
@@ -134,7 +134,28 @@ private class WeakRef<T: AnyObject>: Hashable {
     }
 }
 
-public protocol ActivityDisposable: class {
+public protocol ActivityDisposable: AnyObject {
+    func dispose()
+}
+
+public final class ActivityHolder: ActivityDisposable {
+    private var item: Activity?
+    
+    fileprivate init(_ item: Activity) {
+        self.item = item
+    }
+    
+    init(onDisposed: @escaping () -> Void) {
+        self.item = ActivityItem()
+        self.item?.onDisposed(onDisposed)
+    }
+    
+    public func dispose() {
+        self.item = nil
+    }
+}
+
+fileprivate protocol Activity: class {
     var uuid: UUID { get }
     func onDisposed(_ action: @escaping () -> Void)
 }
@@ -148,12 +169,12 @@ public extension Array where Element == ActivityDisposable {
     
     mutating func remove(_ item: ActivityDisposable?) {
         if let item = item {
-            self.removeAll(where: { item.uuid == $0.uuid })
+            self.removeAll(where: { item === $0 })
         }
     }
 }
 
-public final class ActivityBag: Hashable, ActivityDisposable {
+fileprivate final class ActivityItem: Hashable, Activity {
     public private(set) var uuid: UUID = UUID()
     private var disposeHandlers: [() -> Void] = []
     private var rotateHandler: (() -> Void)?
@@ -176,7 +197,7 @@ public final class ActivityBag: Hashable, ActivityDisposable {
         self.disposeHandlers.append(action)
     }
     
-    public static func == (lhs: ActivityBag, rhs: ActivityBag) -> Bool {
+    public static func == (lhs: ActivityItem, rhs: ActivityItem) -> Bool {
         return lhs.uuid == rhs.uuid
     }
     
@@ -195,14 +216,14 @@ public final class ActivityBag: Hashable, ActivityDisposable {
 
 private final class ActivityGlobalHolder {
     private(set) var uuid: UUID = UUID()
-    private weak var activity: ActivityDisposable?
+    private weak var activity: Activity?
     private var disposeHandler: (() -> Void)?
     
     func isEmpty() -> Bool {
         return self.activity == nil
     }
     
-    func append(_ item: ActivityDisposable) -> ActivityDisposable {
+    func append(_ item: Activity) -> Activity {
         if let activity = self.activity {
             return activity
         }
@@ -240,10 +261,10 @@ private final class ActivityViewHolder {
         return self.references.isEmpty
     }
     
-    func append(item: ActivityDisposable, for view: UIView) -> ActivityDisposable {
+    func append(item: Activity, for view: UIView) -> Activity {
         let key = WeakRef(value: view)
         self.update()
-        if let activity = self.references[key]?.value as? ActivityDisposable {
+        if let activity = self.references[key]?.value as? Activity {
             return activity
         }
         

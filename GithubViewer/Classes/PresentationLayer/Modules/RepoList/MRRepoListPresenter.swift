@@ -72,12 +72,11 @@ extension RepoListPresenter: RepoListEventHandler {
         }
         
         var activity: ActivityDisposable?
-        _ = activity
         let emptyLoadAction: Action<Bool> = { [weak view] show in
             if show {
                 activity = view?.showLoading(fullscreen: false)
             } else {
-                activity = nil
+                activity?.dispose()
             }
         }
 
@@ -96,7 +95,7 @@ extension RepoListPresenter: RepoListEventHandler {
                 router?.show(error: error)
             }
             .showEmptyError { [weak router] value in
-                activity = nil
+                activity?.dispose()
                 if let error = value.error {
                     router?.show(error: error)
                 }
