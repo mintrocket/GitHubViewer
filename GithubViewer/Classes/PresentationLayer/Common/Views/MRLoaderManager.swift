@@ -79,6 +79,8 @@ public final class MRLoaderManager: NSObject {
             UIView.animate(withDuration: 0.2) {
                 view.alpha = 1
             }
+        } else {
+            view.alpha = 1
         }
         MRLoaderManager.shared.updateFrame(for: view)
         
