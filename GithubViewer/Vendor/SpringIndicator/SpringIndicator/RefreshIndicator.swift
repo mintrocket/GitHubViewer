@@ -55,6 +55,7 @@ public class RefreshIndicator: UIControl {
         indicator.center = center
         indicator.autoresizingMask = [.flexibleLeftMargin, .flexibleRightMargin, .flexibleTopMargin, .flexibleBottomMargin]
         addSubview(indicator)
+        self.layer.zPosition = CGFloat.greatestFiniteMagnitude
     }
 
     private func setupBlurBack(style: UIBlurEffect.Style) {
@@ -215,15 +216,24 @@ extension RefreshIndicator {
     // MARK: begin
     private func beginRefreshing() {
         isSpinning = true
-        sendActions(for: .valueChanged)
         indicator.layer.add(beginAnimation(), for: .scale)
         startIndicatorAnimation()
-    }
 
-    // MARK: 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            guard let self = self else {
+                return
+            }
+            
+            if self.isSpinning && self.isRefreshing {
+                self.sendActions(for: .valueChanged)
+            }
+        }
+    }
+    
+    // MARK:
     public func startRefreshing() {
-        isRefreshing = true
         indicator.layer.add(beginAnimation(), for: .scale)
+        isRefreshing = true
         isSpinning = true
         startIndicatorAnimation()
         UIView.animate(withDuration: 0.2) {
@@ -236,11 +246,10 @@ extension RefreshIndicator {
     public func endRefreshing() {
         UIView.animate(withDuration: 0.2, animations: { [weak self] in
             self?.indicator.alpha = 0
-        }, completion: { [weak self] _ in
-            self?.indicator.stop() { [weak self] _ in
+            }, completion: { [weak self] _ in
+                self?.indicator.stop()
                 self?.isRefreshing = false
                 self?.isSpinning = false
-            }
         })
     }
 }
