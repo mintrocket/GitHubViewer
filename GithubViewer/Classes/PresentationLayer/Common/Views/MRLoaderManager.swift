@@ -117,8 +117,8 @@ public final class MRLoaderManager: NSObject {
     }
 }
 
-private class WeakRef<T: AnyObject>: Hashable {
-    static func == (lhs: WeakRef<T>, rhs: WeakRef<T>) -> Bool {
+public final class WeakRef<T: AnyObject>: Hashable {
+    public static func == (lhs: WeakRef<T>, rhs: WeakRef<T>) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
     
@@ -127,7 +127,7 @@ private class WeakRef<T: AnyObject>: Hashable {
         self.value = value
     }
     
-    func hash(into hasher: inout Hasher) {
+    public func hash(into hasher: inout Hasher) {
         if let value = self.value as? AnyHashable {
             hasher.combine(value)
         } else {
@@ -137,10 +137,13 @@ private class WeakRef<T: AnyObject>: Hashable {
 }
 
 public protocol ActivityDisposable: AnyObject {
+    var isDisposed: Bool { get }
     func dispose()
 }
 
 public final class ActivityHolder: ActivityDisposable {
+    public var isDisposed: Bool = false
+    
     private var item: Activity?
     
     fileprivate init(_ item: Activity) {
@@ -153,11 +156,12 @@ public final class ActivityHolder: ActivityDisposable {
     }
     
     public func dispose() {
+        self.isDisposed = true
         self.item = nil
     }
 }
 
-fileprivate protocol Activity: class {
+private protocol Activity: class {
     var uuid: UUID { get }
     func onDisposed(_ action: @escaping () -> Void)
 }
