@@ -10,6 +10,7 @@ public protocol StatusBarChangeable: class {
 }
 
 public final class ToastModalRouter: ChaperoneRouter {
+    private static var oldStyle: UIStatusBarStyle?
     public struct Options {
         var transition: WindowTransition
         var frame: CGRect
@@ -43,10 +44,10 @@ public final class ToastModalRouter: ChaperoneRouter {
     }
 
     private func toast(_ controller: UIViewController) {
-        let oldStyle = UIApplication.shared.statusBarStyle
-        let windowLevel = UIWindow.Level.normal + CGFloat(UIApplication.shared.windows.count)
+        let oldStyle: UIStatusBarStyle = UIApplication.shared.statusBarStyle
+        let windowLevel: UIWindow.Level = UIWindow.Level.normal + CGFloat(UIApplication.shared.windows.count)
         var window: UIWindow! = UIWindow(frame: UIScreen.main.bounds)
-        
+
         window.rootViewController = controller
         window.windowLevel = windowLevel
         window.makeKeyAndVisible()
@@ -60,24 +61,22 @@ public final class ToastModalRouter: ChaperoneRouter {
 
         ToastModalRouter.bag = DisposeBag()
         let animationTime: TimeInterval = self.options.transition.animator.duration
-        Observable<Int>.timer(self.duration + animationTime, scheduler: MainScheduler.instance)
-            .subscribe(onNext: { _ in
-                ToastModalRouter.bag = nil
-            }, onDisposed: {
-                window.frame = UIScreen.main.bounds
-                (window.rootViewController as? StatusBarChangeable)?.statusBarStyle = oldStyle
-                window.rootViewController?.setNeedsStatusBarAppearanceUpdate()
-                window.frame = self.options.frame
 
-                self.options.transition.prepareForDissmiss(window)
-                self.options.transition.animator.run(animation: {
-                    self.options.transition.animateDissmiss(window)
-                }, completion: {
-                    self.completion?()
-                    window = nil
-                })
+        DispatchQueue.main.asyncAfter(deadline: .now() + self.duration + animationTime) {
+            window.frame = UIScreen.main.bounds
+            (window.rootViewController as? StatusBarChangeable)?.statusBarStyle = oldStyle
+            window.rootViewController?.setNeedsStatusBarAppearanceUpdate()
+            window.frame = self.options.frame
+
+            self.options.transition.prepareForDissmiss(window)
+            self.options.transition.animator.run(animation: {
+                self.options.transition.animateDissmiss(window)
+            }, completion: {
+                self.completion?()
+                window = nil
             })
-            .disposed(by: ToastModalRouter.bag)
+        }
+
         self.options.transition.prepareForShow(window)
         self.options.transition.animator.run(animation: {
             self.options.transition.animateShow(window)
@@ -93,6 +92,9 @@ public class ModalRouter: NSObject, ChaperoneRouter {
     init(target: UIViewController, parent: UIViewController?) {
         self.target = target
         self.parent = parent
+        if parent == nil {
+            self.target.modalPresentationStyle = .fullScreen
+        }
     }
 
     public func set(level: UIWindow.Level) -> Self {
@@ -114,10 +116,11 @@ public class ModalRouter: NSObject, ChaperoneRouter {
 
     private func presentModal(_ controller: UIViewController) {
         let windowLevel = self.windowLevel + CGFloat(UIApplication.shared.windows.count)
-        var window: UIWindow? = MRWindow.create(level: windowLevel)
-        window?.rootViewController?.present(controller, animated: true, completion: {
-            window = nil
-        })
+        let window: UIWindow? = MRWindow.create(level: windowLevel)
+        controller.storedWindow = window
+        DispatchQueue.main.async {
+            window?.rootViewController?.present(controller, animated: true)
+        }
     }
 }
 
@@ -210,15 +213,19 @@ public final class ShowWindowRouter: ChaperoneRouter {
     }
 }
 
+public protocol ChildNavigationContainer: UIViewController {
+    var childContainerView: UIView? { get }
+}
+
 public class ShowChildRouter: ChaperoneRouter {
     let target: UIViewController
     let parent: UIViewController
     let container: UIView?
 
-    init(target: UIViewController, parent: UIViewController, container: UIView? = nil) {
+    init(target: UIViewController, parent: UIViewController) {
         self.target = target
         self.parent = parent
-        self.container = container
+        self.container = (parent as? ChildNavigationContainer)?.childContainerView
     }
 
     public func move() {
@@ -256,13 +263,19 @@ public final class PresentRouter<T: UIPresentationController>: ModalRouter, UIVi
         self.presentation = presentation
         self.configure = configure
         super.init(target: target, parent: parent)
-    }
 
-    public override func move() {
         self.target.modalTransitionStyle = .crossDissolve
         self.target.modalPresentationStyle = .custom
         self.target.modalPresentationCapturesStatusBarAppearance = true
         self.target.transitioningDelegate = self
+    }
+
+    public func set(_ modalPresentationStyle: UIModalPresentationStyle) -> Self {
+        self.target.modalPresentationStyle = modalPresentationStyle
+        return self
+    }
+
+    public override func move() {
         super.move()
     }
 
@@ -277,7 +290,7 @@ public final class PresentRouter<T: UIPresentationController>: ModalRouter, UIVi
 
 // MARK: - Support classes
 
-public final class MRWindow: UIWindow {
+fileprivate final class MRWindow: UIWindow {
     class func create(level: UIWindow.Level? = nil,
                       frame: CGRect = UIScreen.main.bounds,
                       statusBarStyle: UIStatusBarStyle? = nil) -> UIWindow {
@@ -305,15 +318,39 @@ public final class MRWindow: UIWindow {
         alertWindow.makeKeyAndVisible()
         return alertWindow
     }
-
-    deinit {
-        print("[D] MRWindow")
-    }
 }
 
 private class MRViewController: UIViewController {
     var style: UIStatusBarStyle = .default
+
     public override var preferredStatusBarStyle: UIStatusBarStyle {
         return self.style
+    }
+}
+
+public final class ObjectAssociation<T: AnyObject> {
+
+    private let policy: objc_AssociationPolicy
+
+    /// - Parameter policy: An association policy that will be used when linking objects.
+    public init(policy: objc_AssociationPolicy = .OBJC_ASSOCIATION_RETAIN_NONATOMIC) {
+        self.policy = policy
+    }
+
+    /// Accesses associated object.
+    /// - Parameter index: An object whose associated object is to be accessed.
+    public subscript(index: AnyObject) -> T? {
+        get { objc_getAssociatedObject(index, Unmanaged.passUnretained(self).toOpaque()) as? T }
+        set { objc_setAssociatedObject(index, Unmanaged.passUnretained(self).toOpaque(), newValue, policy) }
+    }
+}
+
+private extension UIViewController {
+    private static let association = ObjectAssociation<UIWindow>()
+
+    var storedWindow: UIWindow? {
+
+        get { return Self.association[self] }
+        set { Self.association[self] = newValue }
     }
 }
