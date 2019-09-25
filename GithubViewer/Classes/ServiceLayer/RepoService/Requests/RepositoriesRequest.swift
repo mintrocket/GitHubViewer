@@ -7,7 +7,6 @@ public struct RepositoriesRequest: BackendAPIRequest {
 
     init(since id: Int?) {
         if let value = id {
-            self.parameters["since"] = value
             self.parameters["since"] = [value]
         }
     }
